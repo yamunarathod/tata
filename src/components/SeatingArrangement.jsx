@@ -919,7 +919,7 @@ const SeatingArrangement = () => {
   return (
     <div style={styles.mainContainer}>
        <div style={styles.textContainer}>
-    <h1 style={styles.heading}>Find your seat</h1>
+    <h1 style={styles.heading}>FIND YOUR SEAT</h1>
   </div>
     <div style={styles.imageContainer}>
       <img src="../stage.png" alt="Centered Image" style={styles.image} />
@@ -947,7 +947,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: '25px', // Space between the text and the image
+    marginBottom: '18px', // Space between the text and the image
   },
   heading: {
     fontSize: '24px', // Adjust as needed
@@ -958,7 +958,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: '30px', // Space between the image and the seating arrangement
+    marginBottom: '15px', // Space between the image and the seating arrangement
   },
   image: {
     width: '200px', // Adjust as needed
@@ -970,6 +970,8 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     padding: '10px',
+    marginLeft: '20px',  // Add margin to the left
+    marginRight: '20px', // Add margin to the right
   },
   button: {
     marginBottom: '20px',
