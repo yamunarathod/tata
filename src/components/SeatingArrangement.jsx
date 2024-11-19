@@ -1176,7 +1176,6 @@ const styles = {
     marginRight: '20px',
     height: '50vh', // Set a fixed height for the container
     overflowY: 'scroll', // Allow vertical scrolling if content overflows
-    border: '1px solid #ccc', // Optional: add a border for visual clarity
   },
   rowContainer: {
     marginBottom: '10px',
