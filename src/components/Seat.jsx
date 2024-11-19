@@ -361,8 +361,8 @@ const Seat = ({ seatNumber, shouldFlip, isBooked, isAttended, onSeatClick }) => 
   const seatStyle = {
     padding: '1vh',
     margin: '0.5vh',
-    width: '6vw',
-    height: '6vw',
+    width: '7vw',
+    height: '7vw',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
