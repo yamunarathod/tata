@@ -1174,7 +1174,7 @@ const styles = {
     padding: '10px',
     marginLeft: '20px',
     marginRight: '20px',
-    height: '50vh', // Set a fixed height for the container
+    height: '55vh', // Set a fixed height for the container
     overflowY: 'scroll', // Allow vertical scrolling if content overflows
   },
   rowContainer: {
