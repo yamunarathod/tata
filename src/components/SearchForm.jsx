@@ -1297,6 +1297,238 @@
 
 // export default SearchForm;
 
+
+
+
+
+
+
+// import React, { useState } from 'react';
+// import axios from 'axios'; // For HTTP requests
+// import "../index.css";
+// import { useNavigate } from 'react-router-dom';
+
+// const SearchForm = () => {
+//   const [showVendorForm, setShowVendorForm] = useState(false); // Toggle vendor form
+//   const [code, setCode] = useState(''); // Employee or vendor code
+//   const [fullName, setFullName] = useState(''); // Vendor name
+//   const [message, setMessage] = useState(''); // Result message
+//   const [seatNumber, setSeatNumber] = useState(''); // Allocated seat
+//   const [isAttended, setIsAttended] = useState(false); // Attendance status
+//   const [hasError, setHasError] = useState(false); // Track if there's an error
+//   const navigate = useNavigate();
+
+//   // Function to handle switching forms and resetting error message
+//   const toggleForm = () => {
+//     setShowVendorForm(!showVendorForm);
+//     setMessage(''); // Clear error message when switching forms
+//     setCode(''); // Optionally clear code to avoid cross-form data leakage
+//     setFullName(''); // Clear vendor full name if switching from vendor to employee
+//     setHasError(false); // Reset error state
+//   };
+
+//   // Handle Employee Form Submission
+//   const handleEmployeeFormSubmit = async (e) => {
+//     e.preventDefault();
+
+//     const formData = { code };
+//     console.log("Employee Form Data:", formData);
+
+//     try {
+//       const response = await axios.post('https://orca-app-zbdu3.ondigitalocean.app/verify-code', formData, {
+//         headers: { 'Content-Type': 'application/json' },
+//       });
+
+//       if (response.data.success) {
+//         setSeatNumber(response.data.seatNumber);
+//         setIsAttended(response.data.isAttended);
+//         setMessage('Code verified successfully!');
+//         setHasError(false);
+//         navigate('/seating', { state: { seatNumber: response.data.seatNumber } });
+//       }
+//     } catch (error) {
+//       setMessage("⚠️ Enter Valid Personal Number");
+//       setHasError(true);
+//       setCode(''); // Empty the input field on error
+//       console.error("Employee Verification Error:", error.response?.data || error.message);
+//     }
+//   };
+
+//   // Handle Vendor Form Submission
+//   const handleVendorFormSubmit = async (e) => {
+//     e.preventDefault();
+
+//     if (!code) {
+//       setMessage('Vendor code is required.');
+//       setHasError(true);
+//       return;
+//     }
+
+//     const formData = { code, fullName };
+//     console.log("Vendor Form Data Sent to Backend:", formData);
+
+//     try {
+//       const response = await axios.post('https://orca-app-zbdu3.ondigitalocean.app/verify-vendor', formData, {
+//         headers: { 'Content-Type': 'application/json' },
+//       });
+
+//       if (response.data.success) {
+//         setSeatNumber(response.data.seatNumber);
+//         setIsAttended(response.data.isAttended);
+//         setMessage('Vendor verified successfully!');
+//         setHasError(false);
+//         navigate('/seating', { state: { seatNumber: response.data.seatNumber } });
+//       }
+//     } catch (error) {
+//       setMessage("⚠️ Enter Valid Vendor code");
+//       setHasError(true);
+//       setCode(''); // Empty the input field on error
+//       console.error("Vendor Verification Error:", error.response?.data || error.message);
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen w-full flex items-center justify-center p-4">
+//       <div className="w-full max-w-md space-y-12 -mt-12">
+//         {/* Employee Form */}
+//         {!showVendorForm && (
+//           <div className="space-y-8 m-4 flex flex-col items-center justify-center">
+//             <h1 className="text-yellow-500 text-3xl font-semibold tracking-wide mb-6">ENTER DETAILS</h1>
+//             <form className="w-full max-w-sm" onSubmit={handleEmployeeFormSubmit}>
+//               <div className="flex flex-col gap-1 items-start">
+//                 <label htmlFor="employeeCode" className="text-yellow-300 text-sm">
+//                   Personal Number*
+//                 </label>
+//                 <div className="relative w-full">
+//                   <input
+//                     type="text"
+//                     id="employeeCode"
+//                     value={code}
+//                     onChange={(e) => {
+//                       // Restrict input to only numbers
+//                       const value = e.target.value;
+//                       if (/^[0-9]*$/.test(value)) {
+//                         setCode(value);
+//                         setHasError(false); // Reset error state when typing
+//                       } else {
+//                         setHasError(true); // Set error if input contains letters
+//                       }
+//                     }}
+//                     placeholder={hasError ? "Enter Valid Personal Number" : "Enter Valid Personal Number"}
+//                     className={`w-full border ${hasError ? 'border-red-500' : 'border-yellow-400'
+//                       } bg-transparent text-yellow-300 placeholder-${hasError ? 'red-500' : 'yellow-300/70'
+//                       } focus:ring-yellow-400 rounded-none p-2 pl-10 outline-none`}
+//                   />
+//                   {hasError && (
+//                     <span className="absolute right-2 top-2.5 text-red-500 text-lg">⚠️</span>
+//                   )}
+//                 </div>
+//               </div>
+
+//               <div className="text-center mt-[2rem]">
+//                 <button
+//                   type="submit"
+//                   className="w-[40%] bg-gradient-to-r from-yellow-300 to-yellow-700 hover:from-yellow-500 hover:to-yellow-300 text-black font-semibold py-2 px-4 rounded-none transition-colors"
+//                 >
+//                   SUBMIT
+//                 </button>
+//               </div>
+//             </form>
+//             <p className="text-white text-sm mt-4 w-60 text-center">
+//               For an invitee from a vendor partner,{' '}
+//               <span
+//                 onClick={toggleForm}
+//                 className="text-white font-bold cursor-pointer border-b-2 border-white"
+//               >
+//                 Click here to register
+//               </span>
+//             </p>
+//           </div>
+//         )}
+
+//         {/* Vendor Form */}
+//         {showVendorForm && (
+//           <div className="space-y-8 m-4 flex flex-col items-center justify-center">
+//             <h1 className="text-yellow-500 text-3xl font-semibold tracking-wide mb-6">ENTER DETAILS (Vendor)</h1>
+//             <form className="w-full max-w-sm" onSubmit={handleVendorFormSubmit}>
+//               {/* Full Name Field */}
+//               <div className="flex flex-col gap-1 items-start">
+//                 <label htmlFor="vendorName" className="text-yellow-300 text-sm">
+//                   Full Name*
+//                 </label>
+//                 <div className="relative w-full">
+//                   <input
+//                     type="text"
+//                     id="vendorName"
+//                     value={fullName}
+//                     onChange={(e) => {
+//                       setFullName(e.target.value);
+//                       setHasError(false); // Reset error state when typing
+//                     }}
+//                     placeholder="Enter Vendor Name"
+//                     className="w-full border border-yellow-400 bg-transparent text-yellow-300 placeholder-yellow-300/70 focus:ring-yellow-400 rounded-none p-2 pl-10 outline-none"
+//                   />
+//                 </div>
+//               </div>
+
+//               {/* Vendor Code Field */}
+//               <div className="flex flex-col gap-1 items-start mt-4">
+//                 <label htmlFor="vendorCode" className="text-yellow-300 text-sm">
+//                   Vendor Code*
+//                 </label>
+//                 <div className="relative w-full">
+//                   <input
+//                     type="text"
+//                     id="vendorCode"
+//                     value={code}
+//                     onChange={(e) => {
+//                       setCode(e.target.value);
+//                       setHasError(false); // Reset error state when typing
+//                     }}
+//                     placeholder={hasError ? message : "Enter Vendor Code"}
+//                     className={`w-full border ${hasError ? 'border-red-500' : 'border-yellow-400'
+//                       } bg-transparent text-yellow-300 placeholder-${hasError ? 'red-500' : 'yellow-300/70'
+//                       } focus:ring-yellow-400 rounded-none p-2 pl-10 outline-none`}
+//                   />
+//                   {hasError && code && (
+//                     <span className="absolute right-2 top-2.5 text-red-500 text-lg">⚠️</span>
+//                   )}
+//                 </div>
+//               </div>
+
+//               {/* Submit Button */}
+//               <div className="text-center mt-[2rem]">
+//                 <button
+//                   type="submit"
+//                   className="w-[40%] bg-gradient-to-r from-yellow-300 to-yellow-700 hover:from-yellow-500 hover:to-yellow-300 text-black font-semibold py-2 px-4 rounded-none transition-colors"
+//                 >
+//                   SUBMIT
+//                 </button>
+//               </div>
+//             </form>
+//             <p className="text-white text-sm mt-4 w-60 text-center">
+//               If you are an employee,{' '}
+//               <span
+//                 onClick={toggleForm}
+//                 className="text-white font-bold cursor-pointer border-b-2 border-white"
+//               >
+//                 Click here to login
+//               </span>
+//             </p>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SearchForm;
+
+
+
+
+
+
 import React, { useState } from 'react';
 import axios from 'axios'; // For HTTP requests
 import "../index.css";
@@ -1358,7 +1590,10 @@ const SearchForm = () => {
       return;
     }
 
-    const formData = { code, fullName };
+    // Convert the code to uppercase
+    const upperCaseCode = code.toUpperCase();
+
+    const formData = { code: upperCaseCode, fullName };
     console.log("Vendor Form Data Sent to Backend:", formData);
 
     try {
@@ -1380,6 +1615,7 @@ const SearchForm = () => {
       console.error("Vendor Verification Error:", error.response?.data || error.message);
     }
   };
+
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4">
@@ -1476,7 +1712,7 @@ const SearchForm = () => {
                     id="vendorCode"
                     value={code}
                     onChange={(e) => {
-                      setCode(e.target.value);
+                      setCode(e.target.value.toUpperCase());
                       setHasError(false); // Reset error state when typing
                     }}
                     placeholder={hasError ? message : "Enter Vendor Code"}
