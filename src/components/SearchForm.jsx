@@ -1736,7 +1736,7 @@ const SearchForm = () => {
                 </button>
               </div>
             </form>
-            <p className="text-white text-sm mt-4 w-60 text-center">
+            <p className="text-white text-sm mt-4 w-80 text-center">
               If you are an employee,{' '}
               <span
                 onClick={toggleForm}
