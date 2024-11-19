@@ -998,9 +998,432 @@
 
 
 
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
+// import { useLocation } from 'react-router-dom';
+// import axios from 'axios'; // Import axios for API calls
+// import Seat from './Seat';
+
+// const SeatingArrangement = () => {
+//   const rowLabels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']; // Extended with J and K rows
+//   const rows = Array.from({ length: 11 }, (_, i) => i + 1); // Now covers up to row K
+//   const [flipSeats, setFlipSeats] = useState({});
+//   const [bookedSeats, setBookedSeats] = useState({}); // To track which seats are booked
+//   const [attendedSeats, setAttendedSeats] = useState([]); // State to store attended seats
+
+//   const location = useLocation();
+//   const seatNumber = location.state?.seatNumber; // Get seat number like E1, V1 from the location state
+
+//   useEffect(() => {
+//     // Fetch attended seats on component mount
+//     const fetchAttendedSeats = async () => {
+//       try {
+//         const response = await axios.get('https://orca-app-zbdu3.ondigitalocean.app/api/attended-seats', {
+//           headers: {
+//             'Content-Type': 'application/json',
+//           },
+//         });
+
+//         // Combine employees and vendors into a single array
+//         const combinedSeats = [...response.data.employees, ...response.data.vendors];
+//         setAttendedSeats(combinedSeats);
+
+//         console.log(response.data, 'Attended Seats Data');
+//       } catch (error) {
+//         console.error('Error fetching attended seats', error);
+//       }
+//     };
+
+//     fetchAttendedSeats();
+//   }, []);
+
+//   useEffect(() => {
+//     if (seatNumber) {
+//       // Flip the specific seat passed in the location
+//       flipSeat(seatNumber);
+//     }
+//   }, [seatNumber]);
+
+//   const flipSeat = (seat) => {
+//     // Flip the specific seat (turn it black)
+//     setFlipSeats((prev) => ({
+//       ...prev,
+//       [seat]: true, // Mark the seat as flipped
+//     }));
+
+//     // Mark seat as booked
+//     setBookedSeats((prev) => ({
+//       ...prev,
+//       [seat]: true,
+//     }));
+
+//     // Optionally reset the flipped seat after a delay
+//     setTimeout(() => {
+//       setFlipSeats((prev) => ({
+//         ...prev,
+//         [seat]: false, // Reset the flipped seat
+//       }));
+//     }, 2000); // Adjust timeout duration as needed
+//   };
+
+//   const renderSeats = (rowNumber) => {
+//     let seatCount = 8; // Default seat count for rows
+//     const rowLabel = rowLabels[rowNumber - 1];
+
+//     // Adjust seat count dynamically for specific rows
+//     if (rowNumber >= 5 && rowNumber <= 10) {
+//       seatCount = 10; // 6 on each side
+//     } else if (rowNumber === 11) {
+//       seatCount = 2; // Only two seats (one on each side)
+//     } 
+
+//     const isOddRow = rowNumber % 2 !== 0;
+//     const leftSeats = Array.from({ length: seatCount / 2 }, (_, i) => i + 1);
+//     const rightSeats = Array.from({ length: seatCount / 2 }, (_, i) => i + 1 + seatCount / 2);
+
+//     const seats = [];
+//     const spaceStyle = { width: isOddRow ? '15px' : '50px' }; // Adjust space width if necessary
+
+//     const mapSeatNumbers = (sideSeats) => {
+//       return sideSeats.map((seatIndex) => {
+//         const seatId = `${rowLabel}${seatIndex}`;
+//         const isAttended = attendedSeats.includes(seatId); // Now this works!
+
+//         return (
+//           <Seat
+//             key={seatId}
+//             seatNumber={seatId}
+//             shouldFlip={flipSeats[seatId]}
+//             isBooked={bookedSeats[seatId]}
+//             isAttended={isAttended} // Pass if the seat is attended
+//           />
+//         );
+//       });
+//     };
+
+//     seats.push(
+//       <div style={styles.side} key={`left-${rowNumber}`}>
+//         {mapSeatNumbers(leftSeats)}
+//       </div>
+//     );
+
+//     seats.push(<div style={spaceStyle} key={`space-${rowNumber}`}></div>);
+
+//     seats.push(
+//       <div style={styles.side} key={`right-${rowNumber}`}>
+//         {mapSeatNumbers(rightSeats)}
+//       </div>
+//     );
+
+//     return seats;
+//   };
+
+//   return (
+//     <div style={styles.mainContainer}>
+//       <div style={styles.textContainer}>
+//         <h1 style={styles.heading}>FIND YOUR SEAT</h1>
+//       </div>
+//       <div style={styles.imageContainer}>
+//         <img src="../stage.png" alt="Centered Image" style={styles.image} />
+//       </div>
+//       <div style={styles.container}>
+//         {rows.map((rowNumber) => (
+//           <div key={rowNumber} style={styles.rowContainer}>
+//             <div style={styles.row}>{renderSeats(rowNumber)}</div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+
+// const styles = {
+//   mainContainer: {
+//     display: 'flex',
+//     flexDirection: 'column',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     marginTop: '10vh',
+//   },
+//   textContainer: {
+//     display: 'flex',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     marginBottom: '18px',
+//   },
+//   heading: {
+//     fontSize: '24px',
+//     fontWeight: 'bold',
+//     color: '#ECB60D',
+//   },
+//   imageContainer: {
+//     display: 'flex',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     marginBottom: '15px',
+//   },
+//   image: {
+//     width: '200px',
+//     height: 'auto',
+//     objectFit: 'contain',
+//   },
+//   container: {
+//     display: 'flex',
+//     flexDirection: 'column',
+//     alignItems: 'center',
+//     padding: '10px',
+//     marginLeft: '20px',
+//     marginRight: '20px',
+//     height: '55vh', // Set a fixed height for the container
+//     overflowY: 'scroll', // Allow vertical scrolling if content overflows
+//   },
+//   rowContainer: {
+//     marginBottom: '10px',
+//   },
+//   row: {
+//     display: 'flex',
+//     alignItems: 'center',
+//   },
+//   side: {
+//     display: 'flex',
+//     gap: '5px',
+//   },
+//   space: {
+//     width: '40px',
+//   },
+// };
+
+// export default SeatingArrangement;
+
+
+
+
+
+
+
+
+
+// import React, { useState, useEffect, useRef } from 'react';
+// import { useLocation } from 'react-router-dom';
+// import axios from 'axios'; // Import axios for API calls
+// import Seat from './Seat';
+
+// const SeatingArrangement = () => {
+//   const rowLabels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']; // Extended with J and K rows
+//   const rows = Array.from({ length: 11 }, (_, i) => i + 1); // Now covers up to row K
+//   const [flipSeats, setFlipSeats] = useState({});
+//   const [bookedSeats, setBookedSeats] = useState({}); // To track which seats are booked
+//   const [attendedSeats, setAttendedSeats] = useState([]); // State to store attended seats
+
+//   const location = useLocation();
+//   const seatNumber = location.state?.seatNumber; // Get seat number like E1, V1 from the location state
+//   const containerRef = useRef(null); // Ref for the scrollable container
+
+//   useEffect(() => {
+//     // Fetch attended seats on component mount
+//     const fetchAttendedSeats = async () => {
+//       try {
+//         const response = await axios.get('https://orca-app-zbdu3.ondigitalocean.app/api/attended-seats', {
+//           headers: {
+//             'Content-Type': 'application/json',
+//           },
+//         });
+
+//         // Combine employees and vendors into a single array
+//         const combinedSeats = [...response.data.employees, ...response.data.vendors];
+//         setAttendedSeats(combinedSeats);
+
+//         console.log(response.data, 'Attended Seats Data');
+
+//         // Scroll to the first attended seat
+//         scrollToAttendedSeat(combinedSeats);
+//       } catch (error) {
+//         console.error('Error fetching attended seats', error);
+//       }
+//     };
+
+//     fetchAttendedSeats();
+//   }, []);
+
+//   useEffect(() => {
+//     if (seatNumber) {
+//       // Flip the specific seat passed in the location
+//       flipSeat(seatNumber);
+//     }
+//   }, [seatNumber]);
+
+//   const scrollToAttendedSeat = (seats) => {
+//     if (containerRef.current && seats.length > 0) {
+//       // Find the first attended seat in the list
+//       const firstAttendedSeat = seats[0];
+
+//       // Find the element corresponding to the first attended seat
+//       const attendedElement = document.getElementById(firstAttendedSeat);
+//       if (attendedElement) {
+//         // Scroll the container to the attended seat
+//         attendedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+//       }
+//     }
+//   };
+
+//   const flipSeat = (seat) => {
+//     // Flip the specific seat (turn it black)
+//     setFlipSeats((prev) => ({
+//       ...prev,
+//       [seat]: true, // Mark the seat as flipped
+//     }));
+
+//     // Mark seat as booked
+//     setBookedSeats((prev) => ({
+//       ...prev,
+//       [seat]: true,
+//     }));
+
+//     // Optionally reset the flipped seat after a delay
+//     setTimeout(() => {
+//       setFlipSeats((prev) => ({
+//         ...prev,
+//         [seat]: false, // Reset the flipped seat
+//       }));
+//     }, 2000); // Adjust timeout duration as needed
+//   };
+
+//   const renderSeats = (rowNumber) => {
+//     let seatCount = 8; // Default seat count for rows
+//     const rowLabel = rowLabels[rowNumber - 1];
+
+//     // Adjust seat count dynamically for specific rows
+//     if (rowNumber >= 5 && rowNumber <= 10) {
+//       seatCount = 10; // 6 on each side
+//     } else if (rowNumber === 11) {
+//       seatCount = 2; // Only two seats (one on each side)
+//     }
+
+//     const isOddRow = rowNumber % 2 !== 0;
+//     const leftSeats = Array.from({ length: seatCount / 2 }, (_, i) => i + 1);
+//     const rightSeats = Array.from({ length: seatCount / 2 }, (_, i) => i + 1 + seatCount / 2);
+
+//     const seats = [];
+//     const spaceStyle = { width: isOddRow ? '15px' : '50px' }; // Adjust space width if necessary
+
+//     const mapSeatNumbers = (sideSeats) => {
+//       return sideSeats.map((seatIndex) => {
+//         const seatId = `${rowLabel}${seatIndex}`;
+//         const isAttended = attendedSeats.includes(seatId);
+
+//         return (
+//           <Seat
+//             key={seatId}
+//             seatNumber={seatId}
+//             shouldFlip={flipSeats[seatId]}
+//             isBooked={bookedSeats[seatId]}
+//             isAttended={isAttended}
+//             id={seatId} // Add id to the element for scrolling
+//           />
+//         );
+//       });
+//     };
+
+//     seats.push(
+//       <div style={styles.side} key={`left-${rowNumber}`}>
+//         {mapSeatNumbers(leftSeats)}
+//       </div>
+//     );
+
+//     seats.push(<div style={spaceStyle} key={`space-${rowNumber}`}></div>);
+
+//     seats.push(
+//       <div style={styles.side} key={`right-${rowNumber}`}>
+//         {mapSeatNumbers(rightSeats)}
+//       </div>
+//     );
+
+//     return seats;
+//   };
+
+//   return (
+//     <div style={styles.mainContainer}>
+//       <div style={styles.textContainer}>
+//         <h1 style={styles.heading}>FIND YOUR SEAT</h1>
+//       </div>
+//       <div style={styles.imageContainer}>
+//         <img src="../stage.png" alt="Centered Image" style={styles.image} />
+//       </div>
+//       <div style={styles.container} ref={containerRef}>
+//         {rows.map((rowNumber) => (
+//           <div key={rowNumber} style={styles.rowContainer}>
+//             <div style={styles.row}>{renderSeats(rowNumber)}</div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+
+// const styles = {
+//   mainContainer: {
+//     display: 'flex',
+//     flexDirection: 'column',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     marginTop: '10vh',
+//   },
+//   textContainer: {
+//     display: 'flex',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     marginBottom: '18px',
+//   },
+//   heading: {
+//     fontSize: '24px',
+//     fontWeight: 'bold',
+//     color: '#ECB60D',
+//   },
+//   imageContainer: {
+//     display: 'flex',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     marginBottom: '15px',
+//   },
+//   image: {
+//     width: '200px',
+//     height: 'auto',
+//     objectFit: 'contain',
+//   },
+//   container: {
+//     display: 'flex',
+//     flexDirection: 'column',
+//     alignItems: 'center',
+//     padding: '10px',
+//     marginLeft: '20px',
+//     marginRight: '20px',
+//     height: '55vh', // Set a fixed height for the container
+//     overflowY: 'scroll', // Allow vertical scrolling if content overflows
+//   },
+//   rowContainer: {
+//     marginBottom: '10px',
+//   },
+//   row: {
+//     display: 'flex',
+//     alignItems: 'center',
+//   },
+//   side: {
+//     display: 'flex',
+//     gap: '5px',
+//   },
+//   space: {
+//     width: '40px',
+//   },
+// };
+
+// export default SeatingArrangement;
+
+
+
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios'; // Import axios for API calls
+import axios from 'axios';
 import Seat from './Seat';
 
 const SeatingArrangement = () => {
@@ -1009,9 +1432,11 @@ const SeatingArrangement = () => {
   const [flipSeats, setFlipSeats] = useState({});
   const [bookedSeats, setBookedSeats] = useState({}); // To track which seats are booked
   const [attendedSeats, setAttendedSeats] = useState([]); // State to store attended seats
+  const [activeSeat, setActiveSeat] = useState(null); // State to track the active seat
 
   const location = useLocation();
   const seatNumber = location.state?.seatNumber; // Get seat number like E1, V1 from the location state
+  const containerRef = useRef(null); // Ref for the scrollable container
 
   useEffect(() => {
     // Fetch attended seats on component mount
@@ -1028,6 +1453,9 @@ const SeatingArrangement = () => {
         setAttendedSeats(combinedSeats);
 
         console.log(response.data, 'Attended Seats Data');
+
+        // Scroll to the first attended seat
+        scrollToAttendedSeat(combinedSeats);
       } catch (error) {
         console.error('Error fetching attended seats', error);
       }
@@ -1042,6 +1470,72 @@ const SeatingArrangement = () => {
       flipSeat(seatNumber);
     }
   }, [seatNumber]);
+
+  // Scroll to the active seat when it changes
+  useEffect(() => {
+    if (activeSeat) {
+      scrollToSeat(activeSeat);
+    }
+  }, [activeSeat]);
+
+  const scrollToAttendedSeat = (seats) => {
+    if (containerRef.current && seats.length > 0) {
+      // Find the first attended seat in the list
+      const firstAttendedSeat = seats[0];
+
+      // Find the element corresponding to the first attended seat
+      const attendedElement = document.getElementById(firstAttendedSeat);
+      if (attendedElement) {
+        // Scroll the container to the attended seat
+        attendedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  };
+
+  const scrollToSeat = (seatId) => {
+    setTimeout(() => {
+      const seatElement = document.getElementById(seatId);
+      if (seatElement && containerRef.current) {
+        const container = containerRef.current;
+        const containerRect = container.getBoundingClientRect();
+        const seatRect = seatElement.getBoundingClientRect();
+
+
+
+        // Check if the seat is in rows J or K
+        const isInLastRows = seatId.startsWith('J') || seatId.startsWith('K');
+
+        // Check if the seat is not fully visible in the container
+        const isNotVisible =
+          seatRect.bottom > containerRect.bottom ||
+          seatRect.top < containerRect.top;
+
+        // If the seat is not visible, scroll to it
+        if (isNotVisible) {
+          seatElement.scrollIntoView({
+            behavior: 'smooth', // Smooth scrolling
+            block: 'center',    // Center the element in the container
+          });
+
+          // If the seat is in rows J or K, scroll down 20% more
+          if (isInLastRows) {
+            setTimeout(() => {
+              // Adjust scroll position by 20% after the initial scroll
+              container.scrollTop += container.clientHeight * 0.2;
+            }, 300); // Delay to ensure initial scroll is complete
+          }
+
+          // Optional: Add highlight effect
+          seatElement.style.transition = 'background-color 0.3s';
+          seatElement.style.backgroundColor = '#ffeb3b';
+          setTimeout(() => {
+            seatElement.style.backgroundColor = '';
+          }, 1000);
+        }
+      }
+    }, 100);
+  };
+
 
   const flipSeat = (seat) => {
     // Flip the specific seat (turn it black)
@@ -1074,7 +1568,7 @@ const SeatingArrangement = () => {
       seatCount = 10; // 6 on each side
     } else if (rowNumber === 11) {
       seatCount = 2; // Only two seats (one on each side)
-    } 
+    }
 
     const isOddRow = rowNumber % 2 !== 0;
     const leftSeats = Array.from({ length: seatCount / 2 }, (_, i) => i + 1);
@@ -1086,15 +1580,17 @@ const SeatingArrangement = () => {
     const mapSeatNumbers = (sideSeats) => {
       return sideSeats.map((seatIndex) => {
         const seatId = `${rowLabel}${seatIndex}`;
-        const isAttended = attendedSeats.includes(seatId); // Now this works!
-    
+        const isAttended = attendedSeats.includes(seatId);
+
         return (
           <Seat
             key={seatId}
             seatNumber={seatId}
             shouldFlip={flipSeats[seatId]}
             isBooked={bookedSeats[seatId]}
-            isAttended={isAttended} // Pass if the seat is attended
+            isAttended={isAttended}
+            id={seatId} // Add id to the element for scrolling
+            onClick={() => setActiveSeat(seatId)} // Set active seat on click
           />
         );
       });
@@ -1125,7 +1621,7 @@ const SeatingArrangement = () => {
       <div style={styles.imageContainer}>
         <img src="../stage.png" alt="Centered Image" style={styles.image} />
       </div>
-      <div style={styles.container}>
+      <div style={styles.container} ref={containerRef}>
         {rows.map((rowNumber) => (
           <div key={rowNumber} style={styles.rowContainer}>
             <div style={styles.row}>{renderSeats(rowNumber)}</div>
@@ -1135,7 +1631,6 @@ const SeatingArrangement = () => {
     </div>
   );
 };
-
 
 const styles = {
   mainContainer: {
@@ -1186,10 +1681,6 @@ const styles = {
   },
   side: {
     display: 'flex',
-    gap: '5px',
-  },
-  space: {
-    width: '40px',
   },
 };
 
