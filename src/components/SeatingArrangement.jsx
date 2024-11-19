@@ -1859,9 +1859,13 @@ const SeatingArrangement = () => {
     );
 
     return (
-      <div id={rowLabel} style={styles.row} key={rowLabel}>
-        {seats}
-      </div>
+      <div
+      id={rowLabel}
+      style={{ ...styles.row, marginTop: rowNumber === 1 ? '15px' : '0px' }} // Apply marginTop only to the first row
+      key={rowLabel}
+    >
+      {seats}
+    </div>
     );
   };
 
@@ -1891,6 +1895,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: '10vh',
+
   },
   textContainer: {
     display: 'flex',
@@ -1907,7 +1912,6 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: '15px',
   },
   image: {
     width: '200px',
@@ -1923,6 +1927,7 @@ const styles = {
     marginRight: '20px',
     height: '55vh',
     overflowY: 'auto',
+
   },
   rowContainer: {
     marginBottom: '10px',
@@ -1930,6 +1935,7 @@ const styles = {
   row: {
     display: 'flex',
     alignItems: 'center',
+    
   },
   side: {
     display: 'flex',
