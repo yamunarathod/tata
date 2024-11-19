@@ -1861,7 +1861,7 @@ const SeatingArrangement = () => {
     return (
       <div
       id={rowLabel}
-      style={{ ...styles.row, marginTop: rowNumber === 1 ? '15px' : '0px' }} // Apply marginTop only to the first row
+      style={{ ...styles.row, marginTop: rowNumber === 1 ? '20px' : '0px' }} // Apply marginTop only to the first row
       key={rowLabel}
     >
       {seats}
