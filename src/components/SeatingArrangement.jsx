@@ -1081,7 +1081,7 @@ const SeatingArrangement = () => {
     const rightSeats = Array.from({ length: seatCount / 2 }, (_, i) => i + 1 + seatCount / 2);
 
     const seats = [];
-    const spaceStyle = { width: isOddRow ? '20px' : '60px' }; // Adjust space width if necessary
+    const spaceStyle = { width: isOddRow ? '15px' : '50px' }; // Adjust space width if necessary
 
     const mapSeatNumbers = (sideSeats) => {
       return sideSeats.map((seatIndex) => {
@@ -1174,6 +1174,9 @@ const styles = {
     padding: '10px',
     marginLeft: '20px',
     marginRight: '20px',
+    height: '50vh', // Set a fixed height for the container
+    overflowY: 'scroll', // Allow vertical scrolling if content overflows
+    border: '1px solid #ccc', // Optional: add a border for visual clarity
   },
   rowContainer: {
     marginBottom: '10px',
